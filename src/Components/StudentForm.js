@@ -1,10 +1,15 @@
+import axios from 'axios';
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import * as yup from 'yup';
 import '../App.css';
-import PostComponent from './CreateStudent';
 
+const formData = {
+    name: '',
+    email: '',
+    password: ''
+}
 
 const basicSchema = yup.object({
     name: yup.string().required("Required"),
@@ -12,18 +17,29 @@ const basicSchema = yup.object({
     password: yup.string().required("Required").min(5)
 })
 
+
+
 function BasicExample() {
     const createUser = async (event) => {
         event.preventDefault();
-        let formData = {
+        formData = {
             name: event.target[0].value,
             email: event.target[1].value,
             password: event.target[2].value
         };
         const isValid = await basicSchema.isValid(formData);
         console.log(isValid);
+        if(isValid){
+            console.log(formData);
+            const data = axios.post("http://httpbin.org/post", formData)
+            .then(res => {
+                if (res.status === 200) console.log(res)
+            })
+            .catch(err => console.log(err)
+            )
+            console.log(data)
+    }
 
-        <PostComponent {...formData} ></PostComponent>
     }
     return (
         <>
@@ -50,6 +66,7 @@ function BasicExample() {
             </Button>
             </Form>
         </>
+
   );
 }
 

@@ -24,14 +24,14 @@ function BasicExample() {
         const isValid = await basicSchema.isValid(formData);
         console.log(isValid);
         if(isValid){
-            console.log(formData);
-            const data = axios.post("http://httpbin.org/", formData)
+            const config = { 'content-type': 'application/json' };
+            const data = axios.post("http://localhost:4000/", formData, config)
             .then(res => {
                 if (res.status === 200) console.log(res)
             })
-            .catch(err => console.log(err)
+            .catch(err => console.log(JSON.stringify(err))
             )
-            console.log(data);
+            console.log(JSON.stringify(data));
     }
 
     }

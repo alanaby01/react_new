@@ -1,62 +1,46 @@
-const express = require('express')
-const bodyParser = require('body-parser')
+const express = require('express');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
 const mongoose = require('mongoose');
-const MongoClient = require('mongodb');
+const { MongoClient } = require('mongodb');
+
+var url = "mongodb://localhost:27017/student";
+const dbName = 'student';
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
-
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://127.0.0.1:27017/test')
-  .then(() => console.log('Connected!'));
-
+var client;
 var dbSchema = new mongoose.Schema({
     name: String,
     email: String,
     password: String
 })
 
-// async function main(){
-//     const uri = "mongodb+srv://alanaby01:<password>@cluster0.vtygeom.mongodb.net/test"
-//     const client = new MongoClient(uri);
-//     try {
-//         Connect to the MongoDB cluster
-//         await client.connect();
- 
-//         Make the appropriate DB calls
-//         await  listDatabases(client);
- 
-//     } catch (e) {
-//         console.error(e);
-//     } finally {
-//         await client.close();
-//     }
-// }
-// main().catch(console.error);
-
-// async function listDatabases(client){
-//     databasesList = await client.db().admin().listDatabases();
-//     console.log("Databases:");
-//     databasesList.databases.forEach(db => console.log(` - ${db.name}`));
-// };
-
 var User = mongoose.model("User", dbSchema);
 
+async function main() {
+    client = await MongoClient.connect(url, { useNewUrlParser: true }, (error, client) => {
+        if (error) {
+          return console.log("Connection failed for some reason");
+        }
+        console.log("Connection established - All well");
+      });
+}
+main()
+    .then(console.log)
+    .catch(console.error)
+
+async function createStudent(client_local, data){
+    const result = await client_local.db("student").collection("profile").insertOne(data);
+    console.log(`New listing created with the following id: ${result.insertedId}`);
+}
+
 app.post('/', (req, res) => {
-    let data = new User(req.body);
-    console.log(req.body)
-    data.save()
-    .then(item => {
-        res.send("Item stored to MongoDB");
-        console.log("Item stored to MongoDB")
-    })
-    .catch(err => {
-        res.status(400).send("Unable to send to database");
-        console.log("Error");
-    })
+    var myObj = req.body;
+    createStudent(client, myObj);
 })
  
  

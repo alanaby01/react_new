@@ -11,11 +11,10 @@ function ReadStudent(){
         };
         const data = axios.post("http://localhost:4000/read-student", formData)
             .then(res => {
-                if (res.status === 200) console.log(res)
+                console.log(res.data)
             })
             .catch(err => console.log(JSON.stringify(err))
             )
-            console.log(JSON.stringify(data));
     }
     return(
         <>

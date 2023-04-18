@@ -8,11 +8,11 @@ const { MongoClient } = require('mongodb');
 var url = "mongodb://localhost:27017/student";
 const dbName = 'student';
 
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
-var client;
+var client, result;
+
 var dbSchema = new mongoose.Schema({
     name: String,
     email: String,
@@ -34,12 +34,12 @@ main()
     .catch(console.error)
 
 async function createStudent(client_local, data){
-    const result = await client_local.db("student").collection("profile").insertOne(data);
+    result = await client_local.db("student").collection("profile").insertOne(data);
     console.log(`New listing created with the following id: ${result.insertedId}`);
 }
 
 async function readStudentbyName(client_local, data) {
-    const result = await client_local.db("student").collection("profile").findOne({name : data});
+    result = await client_local.db("student").collection("profile").findOne({name : data});
     if (result) {
         console.log(`Found a listing in the collection with the name '${data}':`);
         console.log(result);
@@ -53,10 +53,12 @@ app.post('/', (req, res) => {
     createStudent(client, myObj);
 })
 
-app.post('/read-student',(req,res)=> {
+app.post('/read-student',(req, res)=> {
     var myObj2 = req.body;
-    console.log(myObj2.name);
     readStudentbyName(client, myObj2.name);
+    
+    res.setHeader('Content-Type', 'application/json');
+    res.send({ name: 'user created in db' });
 })
  
 app.listen(4000, () => {

@@ -38,11 +38,26 @@ async function createStudent(client_local, data){
     console.log(`New listing created with the following id: ${result.insertedId}`);
 }
 
+async function readStudentbyName(client_local, data) {
+    const result = await client_local.db("student").collection("profile").findOne({name : data});
+    if (result) {
+        console.log(`Found a listing in the collection with the name '${data}':`);
+        console.log(result);
+    } else {    
+        console.log(`No listings found with the name '${data}'`);
+    }
+}
+
 app.post('/', (req, res) => {
     var myObj = req.body;
     createStudent(client, myObj);
 })
- 
+
+app.post('/read-student',(req,res)=> {
+    var myObj2 = req.body;
+    console.log(myObj2.name);
+    readStudentbyName(client, myObj2.name);
+})
  
 app.listen(4000, () => {
   console.log('Example app listening on port 4000!');

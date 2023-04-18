@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import * as yup from 'yup';
 import '../App.css';
+import ReadStudent from './GetStudentForm';
 
 const basicSchema = yup.object({
     name: yup.string().required("Required"),
@@ -59,6 +60,8 @@ function BasicExample() {
                 Submit
             </Button>
             </Form>
+
+            <ReadStudent></ReadStudent>
         </>
 
   );

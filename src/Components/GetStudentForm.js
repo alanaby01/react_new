@@ -9,12 +9,13 @@ function ReadStudent(){
         const formData = {
             name: eventData.get("name")
         };
-        const data = axios.post("http://localhost:4000/read-student", formData)
+        const config = { 'content-type': 'application/json' };
+        const data = axios.post("http://localhost:4000/read-student", formData, config)
             .then(res => {
-                console.log(res.data)
+                console.log(res)
             })
-            .catch(err => console.log(JSON.stringify(err))
-            )
+            .catch(err => console.log(JSON.stringify(err)))
+            console.log(JSON.stringify(data));
     }
     return(
         <>

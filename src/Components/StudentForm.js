@@ -12,8 +12,6 @@ const basicSchema = yup.object({
     password: yup.string().required("Required").min(5)
 })
 
-
-
 function BasicExample() {
     const createUser = async (event) => {
         const eventData = new FormData(event.target);
@@ -23,18 +21,16 @@ function BasicExample() {
             password: eventData.get("password")
         };
         const isValid = await basicSchema.isValid(formData);
-        console.log(isValid);
         if(isValid){
             const config = { 'content-type': 'application/json' };
             const data = axios.post("http://localhost:4000/", formData, config)
             .then(res => {
-                if (res.status === 200) console.log(res)
+                console.log(res)
             })
             .catch(err => console.log(JSON.stringify(err))
             )
-            console.log(JSON.stringify(data));
     }
-
+    
     }
     return (
         <>

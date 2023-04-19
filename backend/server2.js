@@ -58,17 +58,14 @@ app.post('/', (req, res) => {
 
 app.post('/read-student',(req, res)=> {
     var myObj2 = req.body;
-    console.log(myObj2);
     const data = readStudentbyName(client, myObj2.name)
     .then((value) => {
-        console.log(value);
         res.setHeader('Content-Type', 'application/json');
-        res.send({ name: 'user created in db' })
+        res.send({ name: value.name, email: value.email });
     })
     .catch((err) => {
         res.status(400).send({ err });
     });
-    console.log(data);
 });
  
 app.listen(4000, () => {

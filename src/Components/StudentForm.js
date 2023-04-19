@@ -25,7 +25,7 @@ function BasicExample() {
             const config = { 'content-type': 'application/json' };
             const data = axios.post("http://localhost:4000/", formData, config)
             .then(res => {
-                console.log(res)
+                console.log(res);
             })
             .catch(err => console.log(JSON.stringify(err))
             )
@@ -36,7 +36,7 @@ function BasicExample() {
         <>
             <h1>Student Login</h1>
             <Form onSubmit={createUser}>
-            <Form.Group className="mb-3" controlId="formBasicName">
+            <Form.Group className="mb-3" controlId="formBasicName1">
                 <Form.Label>Name</Form.Label>
                 <Form.Control type="name" placeholder="What is your name?" name="name"/>
                 <Form.Text className="text-muted" />
